@@ -50,10 +50,12 @@ void findCommas(char *strhold, int *com11, int *com12, int *com21, int *com22, i
     return;
 }
 //takes two lines and their pop values and returns them sorted based on which has the bigger pop value
-int compare(const void* a, const void* b)
-{
-    const City *first = a, *second = b;
-      return -(i->population - j->population);
+int compare (const void * f, const void * s) {
+
+  Class **first = (Class **)f;
+  Class **second = (Class **)s;
+
+  return ( (**second).population - (**first).population );
 }
 int main() {
     FILE* fileopen = fopen("cities.csv", "r");
@@ -63,12 +65,12 @@ int main() {
     //incriments through file to determine number of lines
     do {
         fgets(strhold2, N, fileopen);
-        index++;//equal to number of lines after loop
+        index++;
     } while (!feof(fileopen));
     
     
     fclose(fileopen);
-    Class *line[index];//makes a 2D struct of type class to hold multiple entires of information, indexed through the for loop
+    Class *line[index];//makes a 2D struct of
 
     FILE* fileopen2 = fopen("cities.csv", "r");
     char *strhold = malloc(N);
@@ -80,7 +82,7 @@ int main() {
         //passes string to findCommas to get important indexing values
         //passes address of com variables to findCommas to make passing new variable values easier
         findCommas(strhold, &com11, &com12, &com21, &com22, &com31, &com32);
-        Class* cityrow = malloc(sizeof(Class));//1D array that gets rewritten each loop through as data is perminently stored in 2d line class
+        Class* cityrow = malloc(sizeof(Class));
 
         char* cit = malloc(com12 - com11 + 1);
         char* pop = malloc(com22 - com21 + 1);
@@ -99,9 +101,8 @@ int main() {
     }
     fclose(fileopen2);
     
-    qsort(line, index, sizeof(Class*), check);//submits entire 2D line class to q sort to be rewritten in proper order using compair function
+    qsort(line, index, sizeof(Class*), compare);
     FILE* fileopen3 = fopen("sorted.csv", "w");
-    //write sorted line Class into sorted.csv
     for (int r = 0; r <= index - 2; r++){
         
         fprintf(fileopen3, "%s, %.20g, %s\n", line[r]->city, line[r]->population, line[r]->country);
